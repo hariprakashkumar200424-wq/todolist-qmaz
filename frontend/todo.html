@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do-List by QMAX SYSTEMS</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 100%;
+        min-height: 100vh;
+        background-image: url("image/qmax-bg.jpeg");
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: #1a1a1a;
+        padding: 10px;
+      }
+
+      .to-do-app {
+        width: 100%;
+        max-width: 540px;
+        background: rgba(0, 0, 0, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+        margin: 80px auto 20px;
+        padding: 30px 20px 60px;
+        border-radius: 16px;
+      }
+
+      .to-do-app h2 {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
+
+      .to-do-app h2 img {
+        width: 30px;
+        margin-left: 10px;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        padding-left: 20px;
+        margin-bottom: 25px;
+      }
+
+      .row input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 12px 10px;
+        font-size: 15px;
+        color: #ffffff;
+      }
+
+      .row input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .row button {
+        border: none;
+        outline: none;
+        padding: 16px 36px;
+        background: #ff5945;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 30px;
+        margin: 3px;
+        transition: opacity 0.2s;
+      }
+
+      .row button:hover { opacity: 0.88; }
+
+      ul li {
+        list-style: none;
+        font-size: 16px;
+        padding: 12px 8px 12px 50px;
+        user-select: none;
+        cursor: pointer;
+        position: relative;
+        color: #ffffff;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+      }
+
+      ul li::before {
+        content: '';
+        position: absolute;
+        height: 26px;
+        width: 26px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        background: transparent;
+        top: 13px;
+        left: 10px;
+      }
+
+      ul li.checked {
+        color: rgba(255, 255, 255, 0.35);
+        text-decoration: line-through;
+      }
+
+      ul li.checked::before {
+        background: #ff5945;
+        border-color: #ff5945;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8l3.5 3.5L13 4' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-size: 14px;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      ul li span {
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.4);
+        line-height: 36px;
+        text-align: center;
+        border-radius: 5px;
+      }
+
+      ul li span:hover {
+        background: rgba(255, 89, 69, 0.2);
+        color: #ff5945;
+      }
+
+      #status-bar {
+        margin-top: 20px;
+        font-size: 13px;
+        color: rgba(255,255,255,0.5);
+        display: flex;
+        justify-content: space-between;
+        padding: 0 4px;
+      }
+
+      #logout-btn {
+        color: #ff5945;
+        cursor: pointer;
+      }
+
+      #logout-btn:hover { opacity: 0.8; }
+
+      @media (max-width: 600px) {
+        .to-do-app {
+          margin: 30px 10px;
+          padding: 25px 15px 40px;
+        }
+        .row {
+          flex-direction: column;
+          gap: 10px;
+          padding: 12px;
+          border-radius: 16px;
+        }
+        .row input {
+          width: 100%;
+          padding: 10px;
+        }
+        .row button {
+          width: 100%;
+          padding: 12px;
+        }
+        ul li {
+          font-size: 15px;
+          padding-left: 44px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="to-do-app">
+        <h2>To-Do-List by QMAX SYSTEMS <img src="image/icon.png" onerror="this.style.display='none'" /></h2>
+
+        <div class="row">
+          <input type="text" id="input-box" placeholder="ADD YOUR TASK" />
+          <button onclick="addTask()">ADD</button>
+        </div>
+
+        <ul id="list-container"></ul>
+
+        <div id="status-bar" style="display:none;">
+          <span id="task-count"></span>
+          <span id="logout-btn" onclick="logout()">Logout</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
